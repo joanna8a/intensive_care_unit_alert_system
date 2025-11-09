@@ -1,0 +1,20 @@
+# Swagger specific configuration
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: Medical Alert System API
+    groups-order: DESC
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    enabled: true
+  cache:
+    disabled: true
+
+logging:
+  level:
+    org.springdoc: INFO
