@@ -1,9 +1,16 @@
 spring:
+  config:
+    activate:
+      on-profile: docker
+  
   datasource:
     url: jdbc:mysql://icuas-mysql:3306/medical_alerts?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: medical_user
     password: medical_pass
     driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  kafka:
+    bootstrap-servers: kafka:9092
   
   jpa:
     hibernate:

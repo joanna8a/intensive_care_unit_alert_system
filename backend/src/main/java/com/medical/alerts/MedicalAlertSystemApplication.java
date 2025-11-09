@@ -2,12 +2,15 @@ package com.medical.alerts;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-public class MedicalAlertSystemApplication {
+@EnableAsync
+@EnableScheduling
+public class MedicalAlertApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MedicalAlertSystemApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(MedicalAlertApplication.class, args);
+    }
 }
