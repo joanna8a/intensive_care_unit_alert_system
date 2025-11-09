@@ -70,4 +70,8 @@ public class MedicalAlertService {
     public long getActiveCriticalAlertsCount() {
         return alertRepository.countActiveCriticalAlerts();
     }
+    
+    public Optional<MedicalAlert> getAlertById(String alertId) {
+        return alertRepository.findById(alertId);
+    }
 }
