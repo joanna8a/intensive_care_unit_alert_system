@@ -1,100 +1,69 @@
 # intensive_care_unit_alert_system
 
-## SOLID Principles Analysis
-### ✅ S - Single Responsibility Principle (SRP)
-Well Applied:
+# ICU Alert System - Complete Medical Monitoring Platform
 
-Controllers: Handle HTTP requests only (AlertController, PatientController, etc.)
+A comprehensive real-time patient monitoring and medical alert system with full-stack Docker deployment. This system continuously evaluates patient vital signs and generates critical alerts for healthcare professionals with a modern web interface.
 
-Services: Contain business logic (MedicalAlertService, PatientService, etc.)
+## 🏥 System Overview
 
-Repositories: Handle data access only
+The ICU Alert System is a complete medical monitoring platform designed to monitor patient vital signs in real-time, evaluate medical conditions using configurable rules, and generate immediate alerts for critical situations. The system features a Spring Boot backend with React frontend and full Docker containerization.
 
-Strategies: Each rule handles one specific medical condition
+## 🚀 Features
 
-Example of Good SRP:
+### Backend Services
+- **Real-time Vital Signs Monitoring**: Continuous monitoring of heart rate, oxygen saturation, blood pressure, temperature, and respiratory rate
+- **Intelligent Alert System**: Configurable medical rules for detecting critical conditions
+- **Multi-source Data Integration**: Support for manual entry, medical monitors, and IoT devices
+- **Event-Driven Architecture**: Kafka integration for scalable real-time processing
+- **RESTful APIs**: Comprehensive API documentation with Swagger/OpenAPI
+- **Patient Management**: Complete patient record management system
+- **IoT Data Simulation**: Built-in simulator for testing and development
 
-java
-// Each service has one responsibility
-MedicalAlertService - Manages alert logic
-PatientService - Manages patient data
-VitalSignsService - Handles vital signs processing
+### Frontend Interface
+- **Real-time Dashboard**: Live monitoring of patient vital signs and alerts
+- **Multi-language Support**: Internationalization with locale files
+- **Responsive Design**: Works on desktop and mobile devices
+- **Alert Management**: Acknowledge and manage medical alerts
+- **Patient Overview**: Comprehensive patient information display
 
-### ✅ O - Open/Closed Principle (OCP)
-Excellent Implementation!
+### DevOps & Infrastructure
+- **Docker Containerization**: Complete containerized deployment
+- **Multi-environment Support**: Development, production, and override configurations
+- **Database Management**: MySQL with sample data and stored procedures
+- **Automated Scripts**: Start, stop, and backup operations
 
-Strategy Pattern: New medical rules can be added without modifying existing code
+## 🛠 Tech Stack
 
-Interface-based: MedicalRuleStrategy allows extension
+### Backend
+- **Java 17** with **Spring Boot 3.x**
+- **Spring Data JPA** with **Hibernate**
+- **MySQL Database**
+- **Apache Kafka** for event streaming
+- **Lombok** for boilerplate reduction
+- **Swagger/OpenAPI 3** for API documentation
+- **Maven** for dependency management
 
-java
-// New rules can be added without changing MedicalAlertService
-@Component
-public class BloodPressureRule implements MedicalRuleStrategy {
-    // Implements interface without modifying existing code
-}
+### Frontend
+- **React** with modern hooks
+- **TypeScript** for type safety
+- **Nginx** for serving static files
+- **Internationalization** with locale support
 
-### ✅ L - Liskov Substitution Principle (LSP)
-Well Applied:
+### Infrastructure
+- **Docker & Docker Compose**
+- **MySQL 8.0**
+- **Apache Kafka**
+- **Custom scripts** for deployment and maintenance
 
-All strategy implementations (HeartRateRule, OxygenSaturationRule) can substitute MedicalRuleStrategy
+## 📋 Quick Start
 
-Repository interfaces follow JPA contract
+### Prerequisites
+- Docker and Docker Compose
+- Git
 
-Consistent method signatures across implementations
-
-### ✅ I - Interface Segregation Principle (ISP)
-Good Implementation:
-
-MedicalRuleStrategy has focused, cohesive methods
-
-Repository interfaces are specific to their entities
-
-No "fat" interfaces forcing unnecessary implementations
-
-### ✅ D - Dependency Inversion Principle (DIP)
-Excellent Implementation!
-
-Constructor injection with @RequiredArgsConstructor
-
-Depend on abstractions: Services depend on interfaces, not concretions
-
-Spring's DI container manages dependencies
-
-java
-// DIP well implemented
-@Service
-@RequiredArgsConstructor
-public class MedicalAlertService {
-    private final MedicalAlertRepository alertRepository; // Abstraction
-    private final List<MedicalRuleStrategy> ruleStrategies; // Abstraction
-}
-Architecture Strengths
-1. Clean Layered Architecture
-text
-Controllers → Services → Repositories → Database
-2. Event-Driven Design
-Kafka integration for real-time processing
-
-Separation of concerns between data ingestion and alert processing
-
-Scalable message-driven architecture
-
-3. Strategy Pattern for Medical Rules
-java
-// Excellent use of strategy pattern
-private final List<MedicalRuleStrategy> ruleStrategies;
-
-public List<MedicalAlert> evaluateVitalSigns(...) {
-    return ruleStrategies.stream()
-        .map(strategy -> strategy.evaluate(...))
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .toList();
-}
-4. Comprehensive Error Handling
-Input validation in services
-
-Kafka error handling with acknowledgments
-
-Proper exception propagation
+### 1. Clone and Setup
+```bash
+git clone https://github.com/joanna8a/intensive_care_unit_alert_system.git
+cd medical-alert-system
+cp .env.example .env
+# Edit .env with your configuration
