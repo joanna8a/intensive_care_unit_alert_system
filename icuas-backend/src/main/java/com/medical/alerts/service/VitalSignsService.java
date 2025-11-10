@@ -5,9 +5,13 @@ import com.medical.alerts.model.dto.VitalSignsRequest;
 import com.medical.alerts.repository.VitalSignsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -61,7 +65,8 @@ public class VitalSignsService {
 
     public List<PatientVitalSigns> getLatestVitalSigns(String patientId, int limit) {
         log.debug("Retrieving latest {} vital signs for patient: {}", limit, patientId);
-        return vitalSignsRepository.findLatestVitalSigns(patientId, limit);
+        Pageable pageable = PageRequest.of(0, limit);
+        return vitalSignsRepository.findLatestVitalSigns(patientId, pageable);
     }
 
     public void simulateIotData(VitalSignsRequest iotData) {

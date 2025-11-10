@@ -8,9 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-public class MedicalAlertApplication {
+public class MedicalAlertSystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MedicalAlertApplication.class, args);
+        SpringApplication.run(MedicalAlertSystemApplication.class, args);
     }
 }
