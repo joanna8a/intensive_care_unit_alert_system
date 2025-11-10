@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: medical-mysql-prod
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: medical_alerts
+      MYSQL_USER: medical_user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_prod_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: 
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb_buffer_pool_size=1G
+    networks:
+      - medical-network-prod
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  backend:
+    image: medical-alert/backend:latest
+    container_name: medical-backend-prod
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/medical_alerts?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: medical_user
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_PROFILES_ACTIVE: prod
+      JAVA_OPTS: "-Xmx1g -Xms512m"
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - medical-network-prod
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+
+  frontend:
+    image: medical-alert/frontend:latest
+    container_name: medical-frontend-prod
+    ports:
+      - "80:3000"
+    environment:
+      REACT_APP_API_URL: https://api.medicalalertsystem.com/api
+      REACT_APP_WS_URL: wss://api.medicalalertsystem.com/ws
+    networks:
+      - medical-network-prod
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+volumes:
+  mysql_prod_data:
+
+networks:
+  medical-network-prod:
+    driver: bridge
